@@ -3,8 +3,11 @@ import { navItem } from "../../lib/navItem";
 import { useEffect } from "react";
 import { themeChange } from "theme-change";
 import { Moon, SunDim, ShoppingCart, User } from "@phosphor-icons/react";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const addedToCart = useSelector((state) => state.cart.data.cart);
+
   useEffect(() => {
     themeChange(false);
   }, []);
@@ -53,7 +56,7 @@ const Navbar = () => {
             <NavLink to="/cart">
               <div className="indicator">
                 <span className="badge indicator-item badge-accent px-1">
-                  1
+                  {addedToCart.length}
                 </span>
                 <ShoppingCart size={28} />
               </div>

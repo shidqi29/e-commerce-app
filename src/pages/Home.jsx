@@ -1,22 +1,13 @@
-import { useDispatch } from "react-redux";
 import { useGetAllProductsQuery } from "../redux/api/apiSlice";
-import { addToCart } from "../redux/cart/cartSlice";
+import CardProduct from "../components/fragments/CardProduct";
 
 const Home = () => {
   const { data } = useGetAllProductsQuery();
-  const dispatch = useDispatch();
-
-  const handleAddToCart = (id) => {
-    dispatch(addToCart(data[id]));
-  };
 
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {data?.map((item) => (
-        <div key={item.id}>
-          <h1>{item.title}</h1>
-          <button onClick={() => handleAddToCart(item.id)}>Add to Cart</button>
-        </div>
+        <CardProduct product={item} key={item.id} />
       ))}
     </div>
   );

@@ -1,16 +1,21 @@
 import { NavLink } from "react-router-dom";
 import { navItem } from "../../lib/navItem";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { themeChange } from "theme-change";
 import { Moon, SunDim, ShoppingCart, User } from "@phosphor-icons/react";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const addedToCart = useSelector((state) => state.cart.data.cart);
+  const [totalCart, setTotalCart] = useState(0);
+  const addedToCart = useSelector((state) => state.cart.data);
 
   useEffect(() => {
     themeChange(false);
-  }, []);
+    const sumTotalCart = addedToCart.reduce((acc, item) => {
+      return acc + item.qty;
+    }, 0);
+    setTotalCart(sumTotalCart);
+  }, [addedToCart]);
 
   return (
     <header className="sticky top-0 z-10 w-full border-b border-secondary backdrop-blur">
@@ -33,7 +38,7 @@ const Navbar = () => {
         </div>
         <div className="navbar-end gap-4">
           <div className="flex">
-            <label className="swap swap-rotate">
+            <label className="swap-rotate swap">
               {/* this hidden checkbox controls the state */}
               <input type="checkbox" />
               {/* sun icon */}
@@ -56,7 +61,7 @@ const Navbar = () => {
             <NavLink to="/cart">
               <div className="indicator">
                 <span className="badge indicator-item badge-accent px-1">
-                  {addedToCart.length}
+                  {totalCart}
                 </span>
                 <ShoppingCart size={28} />
               </div>

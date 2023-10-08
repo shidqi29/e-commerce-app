@@ -10,7 +10,7 @@ const CardProduct = ({ product }) => {
   const dispatch = useDispatch();
 
   const hangdleAddToCart = () => {
-    dispatch(addToCart({ id, qty: 1 }));
+    dispatch(addToCart({ ...product, qty: 1 }));
   };
 
   return (

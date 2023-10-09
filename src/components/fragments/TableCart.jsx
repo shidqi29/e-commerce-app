@@ -1,8 +1,21 @@
+import { useDispatch } from "react-redux";
 import { formattedPrice } from "../../utils";
 import PropTypes from "prop-types";
+import { addToCart, decreaseQty } from "../../redux/cart/cartSlice";
+import { MinusCircle, PlusCircle } from "@phosphor-icons/react";
 
 const TableCart = ({ item }) => {
   const { title, image, category, price, qty } = item;
+
+  const dispatch = useDispatch();
+
+  const handleIncrementCart = () => {
+    dispatch(addToCart({ ...item, qty: 1 }));
+  };
+
+  const handleDecreaseCart = () => {
+    dispatch(decreaseQty(item));
+  };
 
   return (
     <tr>
@@ -17,13 +30,25 @@ const TableCart = ({ item }) => {
           <span className="text-sm opacity-70">{category}</span>
         </div>
       </td>
-      <td>
+      <td className="w-1/6">
         <div>{formattedPrice(price)}</div>
       </td>
-      <td>
-        <div>{qty}</div>
+      <td className="w-1/6">
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={handleDecreaseCart}
+            type="button"
+            disabled={qty === 1}
+          >
+            <MinusCircle size={20} />
+          </button>
+          <span className="font-semibold">{qty}</span>
+          <button onClick={handleIncrementCart} type="button">
+            <PlusCircle size={20} />
+          </button>
+        </div>
       </td>
-      <td>
+      <td className="w-1/6">
         <div>{formattedPrice(price * qty)}</div> {/* total price */}
       </td>
     </tr>

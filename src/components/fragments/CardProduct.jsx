@@ -9,7 +9,7 @@ const CardProduct = ({ product }) => {
   const { id, title, image, price, rating } = product;
   const dispatch = useDispatch();
 
-  const hangdleAddToCart = () => {
+  const handleAddToCart = () => {
     dispatch(addToCart({ ...product, qty: 1 }));
   };
 
@@ -36,7 +36,7 @@ const CardProduct = ({ product }) => {
         <div className="card-actions mx-2 items-center justify-between px-2 py-3">
           <p className="text-sm">⭐ {rating.rate}</p>
           <button
-            onClick={hangdleAddToCart}
+            onClick={handleAddToCart}
             type="button"
             className="tooltip tooltip-primary"
             data-tip="Add to cart"

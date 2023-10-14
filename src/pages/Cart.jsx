@@ -2,9 +2,22 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import TableCart from "../components/fragments/TableCart";
 import EmptyCart from "../components/fragments/EmptyCart";
+import { formattedPrice } from "../utils";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart.data);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const sumItemPrice = cart.reduce(
+      (total, item) => total + item.price * item.qty,
+      0,
+    );
+    setTotalPrice(sumItemPrice);
+  }, [cart]);
 
   return (
     <div className="container flex w-full max-w-6xl flex-col">
@@ -33,6 +46,21 @@ const Cart = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="mt-4 w-full ">
+            <div className="flex items-center justify-end gap-10 p-2">
+              <div className="text-xl font-bold">Sub-Total</div>
+              <div className="text-xl font-bold">
+                {formattedPrice(totalPrice)}
+              </div>
+              <button
+                className="btn btn-primary btn-wide"
+                aria-label="checkout"
+                onClick={() => navigate("/")}
+              >
+                Check Out
+              </button>
+            </div>
           </div>
         </div>
       ) : (

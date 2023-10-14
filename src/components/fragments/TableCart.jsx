@@ -3,6 +3,7 @@ import { formattedPrice } from "../../utils";
 import PropTypes from "prop-types";
 import { addToCart, decreaseQty } from "../../redux/cart/cartSlice";
 import { MinusCircle, PlusCircle } from "@phosphor-icons/react";
+import { Link } from "react-router-dom";
 
 const TableCart = ({ item }) => {
   const { title, image, category, price, qty } = item;
@@ -26,7 +27,9 @@ const TableCart = ({ item }) => {
       </td>
       <td className="w-3/6 -translate-x-6 text-start">
         <div className="flex flex-col">
-          <p className="font-semibold">{title}</p>
+          <Link className="font-semibold" to={`/product/${item.id}`}>
+            {title}
+          </Link>
           <span className="text-sm opacity-70">{category}</span>
         </div>
       </td>

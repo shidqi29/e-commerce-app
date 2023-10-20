@@ -15,7 +15,19 @@ export const apiSlice = createApi({
       query: (id) => `/products/${id}`,
       providesTags: ["Products"],
     }),
+    userLogin: builder.mutation({
+      query: (user) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: user,
+      }),
+      invalidatesTags: ["Users"],
+    }),
   }),
 });
 
-export const { useGetAllProductsQuery, useGetProductByIdQuery } = apiSlice;
+export const {
+  useGetAllProductsQuery,
+  useGetProductByIdQuery,
+  useUserLoginMutation,
+} = apiSlice;

@@ -3,17 +3,19 @@ import Home from "./pages/Home";
 import Wrapper from "./components/layouts/Wrapper";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
+import Login from "./pages/Login";
 
 function App() {
   return (
     <Router>
-      <Wrapper>
-        <Routes>
+      <Routes>
+        <Route path="/" element={<Wrapper />}>
           <Route index element={<Home />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
-        </Routes>
-      </Wrapper>
+        </Route>
+        <Route path="/login" element={<Login />} />
+      </Routes>
     </Router>
   );
 }

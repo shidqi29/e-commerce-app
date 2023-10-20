@@ -1,19 +1,15 @@
+import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
-import PropTypes from "prop-types";
 
-const Wrapper = ({ children }) => {
+const Wrapper = () => {
   return (
     <>
       <Navbar />
       <main className="container mx-auto flex flex-col items-center">
-        {children}
+        <Outlet />
       </main>
     </>
   );
-};
-
-Wrapper.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default Wrapper;

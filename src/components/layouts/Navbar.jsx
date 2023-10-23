@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import { themeChange } from "theme-change";
 import { Moon, SunDim, ShoppingCart, User } from "@phosphor-icons/react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsername } from "../../utils";
 import { logout } from "../../redux/user/userSlice";
+import { getUsername } from "../../utils";
 
 const Navbar = () => {
+  const [username, setUsername] = useState("");
   const [totalCart, setTotalCart] = useState(0);
   const addedToCart = useSelector((state) => state.cart.data);
-  const username = useSelector((state) => state.user.data.token);
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -25,7 +26,8 @@ const Navbar = () => {
       return acc + item.qty;
     }, 0);
     setTotalCart(sumTotalCart);
-  }, [addedToCart]);
+    setUsername(token ? getUsername(token) : "");
+  }, [addedToCart, token]);
 
   return (
     <header className="sticky top-0 z-10 w-full border-b border-secondary backdrop-blur">
@@ -77,9 +79,9 @@ const Navbar = () => {
               </div>
             </NavLink>
           </div>
-          {username ? (
+          {token ? (
             <div className="flex items-center gap-2">
-              <p>Hello, {getUsername(username)}!</p>
+              <p>Hello, {username}!</p>
               <div className="dropdown dropdown-end">
                 <label tabIndex={0} className="btn btn-circle btn-ghost">
                   <div className="w-7 rounded-full">

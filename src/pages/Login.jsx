@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useUserLoginMutation } from "../redux/api/apiSlice";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/user/userSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { login } from "../redux/user/userSlice";
+import { getUsername } from "../utils";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const usernameRef = useRef();
 
   const dispatch = useDispatch();
@@ -15,30 +15,28 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const [mutate, { isLoading }] = useUserLoginMutation();
+  const [userLogin, { data, isLoading, isSuccess, isError, error }] = useUserLoginMutation();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const userCredentials = { username, password };
-    mutate(userCredentials).then((res) => {
-      if (!res.data?.token) {
-        setError(res.error.data);
-        return;
-      }
-      dispatch(login(res.data));
-      localStorage.setItem("token", res.data.token);
-      navigate(from, { replace: true });
-    });
-    setUsername("");
-    setPassword("");
+    const userCredentials = {
+      username,
+      password
+    }
+    userLogin(userCredentials);
   };
 
   useEffect(() => {
+    if (isSuccess) {
+      localStorage.setItem("token", data.token);
+      dispatch(login({ token: data.token, name: getUsername(data.token) }));
+      navigate(from, { replace: true });
+    }
     if (localStorage.getItem("token")) {
-      navigate("/");
+      navigate(from, { replace: true });
     }
     usernameRef.current.focus();
-  }, []);
+  }, [isSuccess, isError]);
 
   return (
     <div className="hero min-h-screen lg:w-3/4">
@@ -69,7 +67,7 @@ const Login = () => {
                 required
               />
             </div>
-            {error && <span className="text-red-600">{error}</span>}
+            {isError && <span className="text-red-600">{error.data}</span>}
             <div className="form-control mt-6">
               <button
                 className="btn btn-accent tracking-widest text-secondary"

@@ -83,7 +83,6 @@ const DetailProduct = ({ product }) => {
 
 DetailProduct.propTypes = {
   product: PropTypes.object.isRequired,
-  qty: PropTypes.number.isRequired,
 };
 
 export default DetailProduct;

@@ -4,20 +4,19 @@ import { useEffect, useState } from "react";
 import { themeChange } from "theme-change";
 import { Moon, SunDim, ShoppingCart, User } from "@phosphor-icons/react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../redux/user/userSlice";
-import { getUsername } from "../../utils";
+import { logout, selectUsername } from "../../redux/user/userSlice";
 
 const Navbar = () => {
-  const [username, setUsername] = useState("");
   const [totalCart, setTotalCart] = useState(0);
   const addedToCart = useSelector((state) => state.cart.data);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
+  const username = useSelector(selectUsername);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     dispatch(logout());
-    window.location.reload();
+    window.location.href = "/";
   };
 
   useEffect(() => {
@@ -26,8 +25,7 @@ const Navbar = () => {
       return acc + item.qty;
     }, 0);
     setTotalCart(sumTotalCart);
-    setUsername(token ? getUsername(token) : "");
-  }, [addedToCart, token]);
+  }, [addedToCart]);
 
   return (
     <header className="sticky top-0 z-10 w-full border-b border-secondary backdrop-blur">
